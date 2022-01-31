@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 482513214754806360}
   - component: {fileID: 482513214754806362}
   - component: {fileID: 482513214754806363}
+  - component: {fileID: 7410829065586624368}
   m_Layer: 5
   m_Name: WinPopup
   m_TagString: Untagged
@@ -194,6 +195,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7410829065586624368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482513214754806361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0965a561a1b24671aa232a596ffaa47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  closeButton: {fileID: 482513213762281682}
+  playerTurnText: {fileID: 8124792139503710412}
 --- !u!1 &7194203302170810194
 GameObject:
   m_ObjectHideFlags: 0
