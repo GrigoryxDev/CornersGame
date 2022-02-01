@@ -14,13 +14,13 @@ namespace Assets.Scripts.Core
             this.diContainer = diContainer;
         }
 
-        public T Spawn<T>(string resourcesPath, Transform parent)
+        protected T Spawn<T>(string resourcesPath, Transform parent)
         {
             var obj = diContainer.InstantiatePrefabResourceForComponent<T>(resourcesPath, parent);
             return obj;
         }
 
-        public T Spawn<T>(string resourcesPath, Transform parent, Vector3 position, Quaternion rotation)
+        protected T Spawn<T>(string resourcesPath, Transform parent, Vector3 position, Quaternion rotation)
         {
             var obj = diContainer.InstantiatePrefabResourceForComponent<T>(resourcesPath, position, rotation, parent);
             return obj;

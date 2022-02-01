@@ -1,6 +1,6 @@
 namespace Assets.Scripts.Game.States
 {
-    public enum States
+    public enum StatesEnum
     {
         MainMenu,
         Game

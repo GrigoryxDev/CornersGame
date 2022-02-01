@@ -37,7 +37,8 @@ namespace Assets.Scripts.PopupSpawnSystem
             seq.Kill();
             seq = DOTween.Sequence();
             seq.AppendCallback(() => SetActive(true))
-            .Append(GetMateImage.DOFade(GetFromRGBFloatColorValue(targetAlpha), fadeTime));
+            .Append(GetMateImage.DOFade(GetFromRGBFloatColorValue(targetAlpha), fadeTime))
+            .SetEase(Ease.InSine);
         }
 
         public void Hide()
@@ -46,11 +47,12 @@ namespace Assets.Scripts.PopupSpawnSystem
             {
                 return;
             }
-            
+
             GetMateImage.DOFade(1, 0);
             seq.Kill();
             seq = DOTween.Sequence();
             seq.Append(GetMateImage.DOFade(0, fadeTime))
+            .SetEase(Ease.InSine)
             .OnComplete(() =>
             {
                 SetActive(false);

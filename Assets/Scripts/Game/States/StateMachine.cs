@@ -7,40 +7,40 @@ namespace Assets.Scripts.Game.States
 {
     public class StateMachine : MonoBehaviour
     {
-        private readonly Dictionary<States, BaseState> states = new Dictionary<States, BaseState>();
-        private BaseState currentState;
+        private readonly Dictionary<StatesEnum, BaseState> states = new Dictionary<StatesEnum, BaseState>();
+        public BaseState CurrentState { get; private set; }
 
         private void Start()
         {
             var statesArray = GetComponentsInChildren<BaseState>(true);
-           
+
             for (int i = 0; i < statesArray.Length; i++)
             {
                 var state = statesArray[i];
                 states.Add(state.GetStateType, state);
             }
 
-            InitStates(States.MainMenu);
+            InitStates(StatesEnum.MainMenu);
         }
 
-        public void ChangeState(States state)
+        public void ChangeState(StatesEnum state)
         {
-            currentState.Disable();
+            CurrentState.Disable();
 
-            currentState = states[state];
+            CurrentState = states[state];
 
-            currentState.Enable();
+            CurrentState.Enable();
         }
 
-        private void InitStates(States startState)
+        private void InitStates(StatesEnum startState)
         {
             foreach (var item in states)
             {
                 if (item.Key == startState)
                 {
-                    currentState = item.Value;
+                    CurrentState = item.Value;
 
-                    currentState.Enable();
+                    CurrentState.Enable();
                 }
                 else
                 {

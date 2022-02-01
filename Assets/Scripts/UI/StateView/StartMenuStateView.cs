@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.StateView
 {
-    public class MainMenuStateView : MonoBehaviour
+    public class StartMenuStateView : MonoBehaviour
     {
         [SerializeField] private Button startGameButton;
         [SerializeField] private CanvasGroup stateGroup;

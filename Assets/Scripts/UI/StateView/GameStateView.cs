@@ -8,15 +8,16 @@ namespace Assets.Scripts.UI.StateView
 {
     public class GameStateView : MonoBehaviour
     {
-        [SerializeField] private RectTransform boardPanel;
         [SerializeField] private Button restartButton;
         [SerializeField] private TextMeshProUGUI playerTurnsCounterText;
         [SerializeField] private CanvasGroup stateGroup;
 
         public CanvasGroup GeStateCanvasGroup => stateGroup;
-        public RectTransform GetBoardPanel => boardPanel;
         public Button GetRestartButton => restartButton;
-        public TextMeshProUGUI GetPlayerTurnsCounterText => playerTurnsCounterText;
 
+        public void UpdatePlayerCounterText(string playerName, int playerTurn)
+        {
+            playerTurnsCounterText.text = $"{playerName} turn: {playerTurn}";
+        }
     }
 }
