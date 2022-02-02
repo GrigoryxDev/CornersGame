@@ -19,6 +19,7 @@ Frameworks:<br />
 [DOTween](http://dotween.demigiant.com/)<br />
 [Zenject](https://github.com/modesttree/Zenject)<br />
 [UniRx](https://github.com/neuecc/UniRx)<br />
+[Newtonsoft.Json](https://github.com/jilleJr/Newtonsoft.Json-for-Unity)<br />
 
 Sprites:<br />
 [Board](https://gamesupply.itch.io/basic-chess-asset)<br />
