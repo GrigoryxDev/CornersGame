@@ -60,6 +60,7 @@ namespace Assets.Scripts.Game
                 };
             });
         }
+        public void ExtiToMenu() => stateMachine.ChangeState(StatesEnum.MainMenu);
 
         public void RestartGame()
         {
@@ -100,7 +101,7 @@ namespace Assets.Scripts.Game
             popupFactory.SpawnPopup<WinPopup>(PopupNames.WinPopup.ToString(),
             (winPopup) =>
              {
-                 winPopup.EventOnClose += () => stateMachine.ChangeState(StatesEnum.MainMenu);
+                 winPopup.EventOnClose += () => ExtiToMenu();
 
                  var playerModel = currentGameModel.GetCurrentPlayerModel;
                  winPopup.SetWinText(playerModel.Name, playerModel.Turns);

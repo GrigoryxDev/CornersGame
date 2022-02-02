@@ -10,6 +10,7 @@ namespace Assets.Scripts.UI.StateView
     public class GameStateView : MonoBehaviour
     {
         [SerializeField] private Button restartButton;
+        [SerializeField] private Button exitButton;
         [SerializeField] private TextMeshProUGUI playerTurnsCounterText;
         [SerializeField] private CanvasGroup stateGroup;
         [SerializeField] private PlayerTurnIndicator playerTurnIndicator;
@@ -17,6 +18,7 @@ namespace Assets.Scripts.UI.StateView
         public PlayerTurnIndicator GetPlayerTurnIndicator => playerTurnIndicator;
         public CanvasGroup GeStateCanvasGroup => stateGroup;
         public Button GetRestartButton => restartButton;
+        public Button GetExitButton => exitButton;
         public TextMeshProUGUI GetPlayerTurnsCounterText => playerTurnsCounterText;
 
         public void UpdatePlayerCounterText(string playerName, int playerTurn)

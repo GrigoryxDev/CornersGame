@@ -43,7 +43,6 @@ namespace Assets.Scripts.Core
             BindNewClassAsSingleNonLazy<GameElementsMover>();
 
             BindNewClassAsSingleNonLazy<CurrentGameModel>();
-
         }
 
         private void BindNewClassAsSingleNonLazy<T>() => Container.Bind<T>().AsSingle().NonLazy();

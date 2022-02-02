@@ -24,6 +24,12 @@ namespace Assets.Scripts.Game.States
            {
                gameObserver.RestartGame();
            });
+           
+            gameStateView.GetExitButton.onClick.AddListener(() =>
+            {
+                gameObserver.ExtiToMenu();
+            });
+
         }
 
         public override void Enable()
