@@ -17,7 +17,7 @@ namespace Assets.Scripts.Game
         [SerializeField] private float moveChipAnimationTime = .25f;
 
 
-        //TODO: With editor we can set any board size and player chipHouse
+        //TODO: With editor we can set any board size and player chipsHouse
         //Include rectangular form 
         private int boardSize = 8;
         private int playerChipsHouse = 3;
@@ -40,12 +40,12 @@ namespace Assets.Scripts.Game
             //First player always start from left down side
             var firstPlayerStartPosition = new Vector2Int(0, boardSize);
 
-            for (var y = firstPlayerStartPosition.y; y >= firstPlayerStartPosition.y - playerChipsHouse; y--)
+            for (var y = firstPlayerStartPosition.y - 1; y >= firstPlayerStartPosition.y - playerChipsHouse; y--)
             {
                 for (var x = firstPlayerStartPosition.x; x < playerChipsHouse; x++)
                 {
                     var index = new Vector2Int(x, y);
-                    gameBoardModel.firstPlayerStartChipPositions.Add(index);
+                    gameBoardModel.firstPlayerStartPositions.Add(index);
                 }
             }
 
@@ -54,10 +54,10 @@ namespace Assets.Scripts.Game
 
             for (var y = secondPlayerStartPosition.y; y < playerChipsHouse; y++)
             {
-                for (var x = secondPlayerStartPosition.x; x >= secondPlayerStartPosition.x - playerChipsHouse; x--)
+                for (var x = secondPlayerStartPosition.x - 1; x >= secondPlayerStartPosition.x - playerChipsHouse; x--)
                 {
                     var index = new Vector2Int(x, y);
-                    gameBoardModel.secondPlayerStartChipPositions.Add(index);
+                    gameBoardModel.secondPlayerStartPositions.Add(index);
                 }
             }
 

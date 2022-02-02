@@ -44,7 +44,7 @@ namespace Assets.Scripts.Game.States
                 }
                 else
                 {
-                    item.Value.Disable();
+                    item.Value.Disable(true);
                 }
             }
         }

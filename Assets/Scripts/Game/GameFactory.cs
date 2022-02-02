@@ -12,16 +12,16 @@ namespace Assets.Scripts.Game
         private const string chipPath = "PlayerChip";
         private const string boardChipHolderPath = "ChipHolder";
 
-        private readonly List<PlayerChip> spawnedChips = new List<PlayerChip>();
+        private readonly List<IPlayerElement> spawnedPlayerElements = new List<IPlayerElement>();
         private readonly List<ChipHolder> spawnedChipHolders = new List<ChipHolder>();
 
-        public PlayerChip SpawnChip(Transform holder)
+        public IPlayerElement SpawnPlayerElement(Transform holder)
         {
             var path = Path.Combine(resourcesPath, chipPath);
 
-            var chip = Spawn<PlayerChip>(path, holder);
-            spawnedChips.Add(chip);
-            return chip;
+            var playerElement = Spawn<IPlayerElement>(path, holder);
+            spawnedPlayerElements.Add(playerElement);
+            return playerElement;
         }
 
         public ChipHolder SpawnChipHolder(Transform holder)
@@ -41,13 +41,13 @@ namespace Assets.Scripts.Game
 
         private void ReleaseChips()
         {
-            for (int i = 0; i < spawnedChips.Count; i++)
+            for (int i = 0; i < spawnedPlayerElements.Count; i++)
             {
-                var chip = spawnedChips[i];
-                spawnedChips.Remove(chip);
-                Destroy(chip.gameObject);
+                var chip = spawnedPlayerElements[i];
+                spawnedPlayerElements.Remove(chip);
+                Destroy(chip.GetTransform.gameObject);
             }
-            spawnedChips.Clear();
+            spawnedPlayerElements.Clear();
         }
 
         private void ReleaseChipHolders()

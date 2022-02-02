@@ -4,18 +4,29 @@ using UnityEngine.EventSystems;
 using UniRx;
 using System;
 using Assets.Scripts.Game.GameBoard;
+using Zenject;
 
 namespace Assets.Scripts.Game
 {
-    public class UserInput : MonoBehaviour
+    public class UserInput
     {
-        private IDisposable inputObservable;
-        private PlayerChip selectedPlayerChip;
+        private GameElementsMover gameElementsMover;
+        private GameObserver gameObserver;
 
-        public void Active()
+
+        public event Action EventOnElementMoved;
+
+        [Inject]
+        private void Constructor(GameElementsMover gameElementsMover, GameObserver gameObserver)
         {
-            inputObservable?.Dispose();
-            inputObservable = Observable.EveryUpdate().Where(x => Input.GetMouseButtonDown(0))
+            this.gameElementsMover = gameElementsMover;
+            this.gameObserver = gameObserver;
+        }
+
+        public void Initialize()
+        {
+            Observable.EveryUpdate()
+            .Where(x => IsInputActive())
             .Subscribe(x =>
             {
                 PointerEventData eventData = new PointerEventData(EventSystem.current);
@@ -25,30 +36,27 @@ namespace Assets.Scripts.Game
 
                 for (int index = 0; index < raysastResults.Count; index++)
                 {
-                    RaycastResult curRaysastResult = raysastResults[index];
-                    if (curRaysastResult.gameObject.layer == LayerMask.NameToLayer("UI"))
+                    RaycastResult rayCsastResult = raysastResults[index];
+                    if (rayCsastResult.gameObject.layer == LayerMask.NameToLayer("UI"))
                     {
-                        if (curRaysastResult.gameObject.TryGetComponent<PlayerChip>(out var playerChip))
+                        if (rayCsastResult.gameObject.TryGetComponent<ChipHolder>(out var checkedChipHolder))
                         {
-                            if (selectedPlayerChip != null)
+                            if (gameElementsMover.TryMove(checkedChipHolder) == MoverResult.Move)
                             {
-                                //TODO: check 
-
+                                EventOnElementMoved?.Invoke();
                             }
 
-                        }
-                        else if (curRaysastResult.gameObject.TryGetComponent<ChipHolder>(out var chipHolder))
-                        {
-
+                            return;
                         }
                     }
                 }
-            }).AddTo(this);
+            });
         }
 
-        public void Disable()
+        private bool IsInputActive()
         {
-            inputObservable?.Dispose();
+            bool active = Input.GetMouseButtonDown(0) && gameObserver.CurrentGameStatus == GameStatus.Active;
+            return active;
         }
     }
 }

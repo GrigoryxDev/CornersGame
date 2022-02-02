@@ -22,11 +22,9 @@ namespace Assets.Scripts.Game.GameBoard
             this.gameFactory = gameFactory;
         }
 
-        public void PrepareBoard()
+        public void PrepareBoard(BoardSaveModel gameBoardModel)
         {
             ClearBoard();
-
-            var gameBoardModel = GetSaveData();
 
             var elementSize = CalcElementSize(gameBoardModel.boardSize);
 
@@ -45,23 +43,18 @@ namespace Assets.Scripts.Game.GameBoard
 
                     ChipHolder chipHolder = gameFactory.SpawnChipHolder(transform);
                     chipHolder.SetNewPositionAndSize(elementSize, currentRectPosition);
-                    chipHolder.Init(index, nextSprite);
 
-                    CheckPlayerChipSpawn(index, gameBoardModel, elementSize, chipHolder);
+                    InitChipHolder(index, nextSprite, gameBoardModel, elementSize, chipHolder);
 
-                    chipHolders.Add(index, chipHolder);
                     currentRectPosition.x += elementSize.x;
+
                     if (x == gameBoardModel.boardSize.x - 1)
                     {
                         continue;
                     }
-                    else if (nextSprite == blackHolderSprite)
-                    {
-                        nextSprite = whiteHolderSprite;
-                    }
                     else
                     {
-                        nextSprite = blackHolderSprite;
+                        UpdateNextSprite(ref nextSprite, blackHolderSprite, whiteHolderSprite);
                     }
                 }
 
@@ -70,24 +63,77 @@ namespace Assets.Scripts.Game.GameBoard
             }
         }
 
-        private void ClearBoard()
+        public (List<ChipHolder> targetHolders, List<IPlayerElement> playerChips) GetPlayerElements(List<Vector2Int> playerElements, List<Vector2Int> opponentElements)
         {
-            foreach (var item in chipHolders)
+            var targetHolders = new List<ChipHolder>();
+            foreach (var item in opponentElements)
             {
-                Destroy(item.Value.gameObject);
+                targetHolders.Add(chipHolders[item]);
             }
-            chipHolders.Clear();
+            var playerChips = new List<IPlayerElement>();
+            foreach (var item in playerElements)
+            {
+                playerChips.Add(chipHolders[item].GetPlayerElement);
+            }
+
+            return (targetHolders, playerChips);
         }
 
-        private BoardSaveModel GetSaveData()
+        public bool IsContainsHolder(Vector2Int index, out ChipHolder chipHolder)
         {
-            BoardSaveModel gameBoardModel;
-            gameBoardModel = JsonWrapper.GetGameBoardModel();
-            if (gameBoardModel == null)
+            chipHolder = null;
+
+            if (chipHolders.ContainsKey(index))
             {
-                gameBoardModel = gameSettingsSO.PrepareJsonBoardModel();
+                chipHolder = chipHolders[index];
+                return true;
             }
-            return gameBoardModel;
+
+            return false;
+        }
+
+        private void UpdateNextSprite(ref Sprite nextSprite, Sprite blackHolderSprite, Sprite whiteHolderSprite)
+        {
+            if (nextSprite == blackHolderSprite)
+            {
+                nextSprite = whiteHolderSprite;
+            }
+            else
+            {
+                nextSprite = blackHolderSprite;
+            }
+        }
+        private void InitChipHolder(Vector2Int index, Sprite nextSprite, BoardSaveModel gameBoardModel, Vector2 elementSize, ChipHolder holder)
+        {
+            Color color;
+            bool spawnPlayerElement;
+            if (gameBoardModel.firstPlayerStartPositions.Contains(index))
+            {
+                spawnPlayerElement = true;
+                color = gameSettingsSO.GetFirstPlayerColor;
+            }
+            else if (gameBoardModel.secondPlayerStartPositions.Contains(index))
+            {
+                spawnPlayerElement = true;
+                color = gameSettingsSO.GetSecondPlayerColor;
+            }
+            else
+            {
+                spawnPlayerElement = false;
+                color = Color.white;
+            }
+
+            IPlayerElement playerElement = null;
+            if (spawnPlayerElement)
+            {
+                playerElement = gameFactory.SpawnPlayerElement(transform);
+                var baseBoardElement = playerElement.GetTransform.GetComponent<BaseBoardElement>();
+                baseBoardElement.SetNewPositionAndSize(elementSize, holder.GetAnchoredPosition);
+                baseBoardElement.SetColor(color);
+            }
+
+            holder.Init(index, nextSprite, color, playerElement);
+            chipHolders.Add(index, holder);
         }
 
         private Vector2 CalcElementSize(Vector2 boardSize)
@@ -100,35 +146,13 @@ namespace Assets.Scripts.Game.GameBoard
             return elementSize;
         }
 
-        private void CheckPlayerChipSpawn(Vector2Int index, BoardSaveModel gameBoardModel, Vector2 elementSize, ChipHolder holder)
+        private void ClearBoard()
         {
-            Color color;
-            if (gameBoardModel.firstPlayerStartChipPositions.Contains(index))
+            foreach (var item in chipHolders)
             {
-                color = gameSettingsSO.GetFirstPlayerColor;
+                Destroy(item.Value.gameObject);
             }
-            else if (gameBoardModel.secondPlayerStartChipPositions.Contains(index))
-            {
-                color = gameSettingsSO.GetSecondPlayerColor;
-            }
-            else
-            {
-                return;
-            }
-
-            holder.SetColor(color);
-
-            PlayerChip playerChip = gameFactory.SpawnChip(holder.transform);
-            playerChip.SetNewPositionAndSize(elementSize, Vector2.zero);
-            playerChip.SetColor(color);
+            chipHolders.Clear();
         }
-
-        //TODO: set chips to player and compare by saved target lists
-        //MB bind player model
-        //Set chips to player
-        //Set player target holders
-        //User input
-        //Check swaps from up and down and diagonal
-        //Restart should be only reset
     }
 }

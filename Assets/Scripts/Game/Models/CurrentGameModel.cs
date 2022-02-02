@@ -1,15 +1,21 @@
+using System;
+using System.Collections.Generic;
+using Assets.Scripts.Game.GameBoard;
+
 namespace Assets.Scripts.Game.Models
 {
-    public class GameModel
+    public class CurrentGameModel
     {
         private PlayerModel[] players;
         private int currentPlayerIndex;
-
         public PlayerModel GetCurrentPlayerModel => players[currentPlayerIndex];
 
-        public GameModel(PlayerModel[] players)
+        public bool DiagonallyJump { get; private set; }
+        public bool UpAndDownJump { get; private set; }
+
+        public void InitGameData(PlayerModel[] newPlayers)
         {
-            this.players = players;
+            players = newPlayers;
             currentPlayerIndex = 0;
         }
 
@@ -24,6 +30,12 @@ namespace Assets.Scripts.Game.Models
                 currentPlayerIndex = 0;
             }
             players[currentPlayerIndex].MakeTurn();
+        }
+
+        internal void SetJumpToggles(bool diagonaly, bool upAndDown)
+        {
+            DiagonallyJump = diagonaly;
+            UpAndDownJump = upAndDown;
         }
     }
 }

@@ -19,14 +19,11 @@ namespace Assets.Scripts.Game.States
         private void Constructor(GameObserver gameObserver)
         {
             this.gameObserver = gameObserver;
-        }
 
-        private void Start()
-        {
             gameStateView.GetRestartButton.onClick.AddListener(() =>
-            {
-                gameObserver.StartGame();
-            });
+           {
+               gameObserver.RestartGame();
+           });
         }
 
         public override void Enable()
@@ -40,12 +37,19 @@ namespace Assets.Scripts.Game.States
             gameObserver.StartGame();
         }
 
-        public override void Disable()
+        public override void Disable(bool immediately = false)
         {
             tween?.Kill();
-            tween = gameStateView.GeStateCanvasGroup.DOFade(0, GetFadeTime)
-             .SetEase(Ease.InSine)
-            .OnComplete(() => gameObject.SetActive(false));
+            if (immediately)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                tween = gameStateView.GeStateCanvasGroup.DOFade(0, GetFadeTime)
+                .SetEase(Ease.InSine)
+                .OnComplete(() => gameObject.SetActive(false));
+            }
         }
     }
 }

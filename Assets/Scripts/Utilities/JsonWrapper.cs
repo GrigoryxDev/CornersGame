@@ -44,12 +44,7 @@ namespace Assets.Scripts.Utilities
 
             using (StreamReader file = File.OpenText(path))
             {
-                JsonSerializer serializer = new JsonSerializer()
-                {
-                    TypeNameHandling = TypeNameHandling.Auto,
-                    NullValueHandling = NullValueHandling.Ignore,
-                };
-                serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Math.Vector2IntConverter());
+                JsonSerializer serializer = GetJsonSerializer();
 
                 deserialized = (T)serializer.Deserialize(file, typeof(T));
             }
@@ -60,16 +55,23 @@ namespace Assets.Scripts.Utilities
         {
             using (StreamWriter file = File.CreateText(path))
             {
-                JsonSerializer serializer = new JsonSerializer
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    TypeNameHandling = TypeNameHandling.Auto,
-                    Formatting = formatting
-                };
-                serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Math.Vector2IntConverter());
+                JsonSerializer serializer = GetJsonSerializer(formatting);
 
                 serializer.Serialize(file, data);
             }
+        }
+
+        private static JsonSerializer GetJsonSerializer(Formatting formatting = Formatting.Indented)
+        {
+            JsonSerializer serializer = new JsonSerializer
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.Auto,
+                Formatting = formatting
+            };
+            serializer.Converters.Add(new Newtonsoft.Json.UnityConverters.Math.Vector2IntConverter());
+            
+            return serializer;
         }
     }
 }

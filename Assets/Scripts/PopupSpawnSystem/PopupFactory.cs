@@ -16,7 +16,8 @@ namespace Assets.Scripts.PopupSpawnSystem
         [Inject]
         private void Constructor(MatePanel matePanel)
         {
-            spawned.ObserveEveryValueChanged(x => x.Count).Subscribe(count =>
+            spawned.ObserveEveryValueChanged(x => x.Count)
+            .DistinctUntilChanged().Subscribe(count =>
             {
                 if (count > 0)
                 {

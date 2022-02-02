@@ -33,15 +33,23 @@ namespace Assets.Scripts.Game.States
             .SetEase(Ease.InSine);
         }
 
-        public override void Disable()
+        public override void Disable(bool immediately = false)
         {
             sequence?.Kill();
-            sequence = DOTween.Sequence();
-            sequence.Append(mainMenuStateView.GeStateCanvasGroup.DOFade(0, GetFadeTime))
-            .Join(mainMenuStateView.GeStartGameButton.GetComponent<RectTransform>()
-            .DOAnchorPos(disableButtonPosition, GetMoveAnimationTime))
-            .SetEase(Ease.InSine)
-            .OnComplete(() => gameObject.SetActive(false));
+
+            if (immediately)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                sequence = DOTween.Sequence();
+                sequence.Append(mainMenuStateView.GeStateCanvasGroup.DOFade(0, GetFadeTime))
+                .Join(mainMenuStateView.GeStartGameButton.GetComponent<RectTransform>()
+                .DOAnchorPos(disableButtonPosition, GetMoveAnimationTime))
+                .SetEase(Ease.InSine)
+                .OnComplete(() => gameObject.SetActive(false));
+            }
         }
     }
 }

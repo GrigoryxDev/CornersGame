@@ -21,6 +21,6 @@ namespace Assets.Scripts.Game.States
 
         public abstract void Enable();
 
-        public abstract void Disable();
+        public abstract void Disable(bool immediately = false);
     }
 }
