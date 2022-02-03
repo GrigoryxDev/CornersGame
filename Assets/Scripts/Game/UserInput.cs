@@ -11,13 +11,13 @@ namespace Assets.Scripts.Game
     public class UserInput
     {
         private GameElementsMover gameElementsMover;
-        private GameObserver gameObserver;
+        private GameSwitcher gameObserver;
 
 
         public event Action EventOnElementMoved;
 
         [Inject]
-        private void Constructor(GameElementsMover gameElementsMover, GameObserver gameObserver)
+        private void Constructor(GameElementsMover gameElementsMover, GameSwitcher gameObserver)
         {
             this.gameElementsMover = gameElementsMover;
             this.gameObserver = gameObserver;

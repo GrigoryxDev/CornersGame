@@ -17,7 +17,6 @@ namespace Assets.Scripts.Game
         {
             this.board = board;
             this.currentGameModel = currentGameModel;
-
         }
 
         public MoverResult TryMove(ChipHolder checkedChipHolder)
@@ -55,25 +54,23 @@ namespace Assets.Scripts.Game
             }
 
             bool isUpAndDownJump = currentGameModel.UpAndDownJump;
-            bool isDiagonalyJump = currentGameModel.DiagonallyJump;
+            bool isDiagonallyJump = currentGameModel.DiagonallyJump;
 
-            return IsCanJumpUpAndDown(isUpAndDownJump, current, target) ||
-            IsCanJumpDiagonally(isDiagonalyJump, current, target) ||
+            return IsCanJumpVerticalAndHorizontal(isUpAndDownJump, current, target) ||
+            IsCanJumpDiagonally(isDiagonallyJump, current, target) ||
             IsOneStepMove(current, target);
         }
 
-        private bool IsCanJumpUpAndDown(bool isUpAndDownJump, ChipHolder current, ChipHolder target)
+        private bool IsCanJumpVerticalAndHorizontal(bool isUpAndDownJump, ChipHolder current, ChipHolder target)
         {
             if (isUpAndDownJump && target.IsEmpty)
             {
                 var currentIndex = current.HolderIndex;
                 var targetIndex = target.HolderIndex;
 
-                if (currentIndex.x == targetIndex.x &&
-                    Mathf.Abs(Mathf.Abs(currentIndex.y) - Mathf.Abs(targetIndex.y)) == 2)
+                if (Vector2Int.Distance(current.HolderIndex, target.HolderIndex) == 2)
                 {
-                    int checkY = (currentIndex.y + targetIndex.y) / 2;
-                    var checkIndex = new Vector2Int(currentIndex.x, checkY);
+                    Vector2Int checkIndex = (currentIndex + targetIndex) / 2;
                     if (board.IsContainsHolder(checkIndex, out ChipHolder chipHolder))
                     {
                         if (!chipHolder.IsEmpty)

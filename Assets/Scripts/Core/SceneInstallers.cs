@@ -39,7 +39,7 @@ namespace Assets.Scripts.Core
             //Game
             BindSingleNonLazyFromInstance(gameFactory);
             BindSingleNonLazyFromInstance(gameBoard);
-            BindNewClassAsSingleNonLazy<GameObserver>();
+            BindNewClassAsSingleNonLazy<GameSwitcher>();
             BindNewClassAsSingleNonLazy<GameElementsMover>();
 
             BindNewClassAsSingleNonLazy<CurrentGameModel>();

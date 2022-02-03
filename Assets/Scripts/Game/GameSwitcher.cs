@@ -11,7 +11,7 @@ using Zenject;
 namespace Assets.Scripts.Game
 {
 
-    public class GameObserver
+    public class GameSwitcher
     {
         private CurrentGameModel currentGameModel;
         private GameDataGenerator gameDataGenerator;
@@ -24,7 +24,8 @@ namespace Assets.Scripts.Game
         public GameStatus CurrentGameStatus { get; private set; }
 
         [Inject]
-        private void Constructor(GameDataGenerator gameDataGenerator, CurrentGameModel currentGameModel, Board gameBoard, PopupFactory popupFactory,
+        private void Constructor(GameDataGenerator gameDataGenerator, CurrentGameModel currentGameModel,
+         Board gameBoard, PopupFactory popupFactory,
          StateMachine stateMachine, GameStateView gameStateView, UserInput userInput)
         {
             this.gameBoard = gameBoard;
@@ -50,9 +51,11 @@ namespace Assets.Scripts.Game
             {
                 startSettingsPopup.EventOnClose += () =>
                 {
+
                     var toggleInfo = startSettingsPopup.GetTogglesInfo();
-                    currentGameModel.InitGameData(gameDataGenerator.GetNewPlayers(boardSaveModel));//TODO: normal realisation
-                    currentGameModel.SetJumpToggles(toggleInfo.diagonally, toggleInfo.upAndDown);
+                    //TODO: Data receiving from user?
+                    currentGameModel.InitGameData(gameDataGenerator.GetNewPlayers(boardSaveModel));
+                    currentGameModel.SetJumpToggles(toggleInfo.diagonally, toggleInfo.vertAndHorizToggle);
 
                     UpdateUITexts();
 
@@ -60,6 +63,7 @@ namespace Assets.Scripts.Game
                 };
             });
         }
+
         public void ExtiToMenu() => stateMachine.ChangeState(StatesEnum.MainMenu);
 
         public void RestartGame()

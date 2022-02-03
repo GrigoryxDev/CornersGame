@@ -12,11 +12,11 @@ namespace Assets.Scripts.Game.States
         [SerializeField] private GameStateView gameStateView;
 
         private Tween tween;
-        private GameObserver gameObserver;
+        private GameSwitcher gameObserver;
         public override StatesEnum GetStateType => StatesEnum.Game;
 
         [Inject]
-        private void Constructor(GameObserver gameObserver)
+        private void Constructor(GameSwitcher gameObserver)
         {
             this.gameObserver = gameObserver;
 

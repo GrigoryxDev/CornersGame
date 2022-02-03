@@ -6,11 +6,11 @@ namespace Assets.Scripts.UI.Popups
     public class StartSettingsPopup : BasePopup
     {
         [SerializeField] private Toggle diagonallyToggle;
-        [SerializeField] private Toggle upAndDownToggle;
+        [SerializeField] private Toggle vertAndHorizToggle;
 
-        public (bool diagonally, bool upAndDown) GetTogglesInfo()
+        public (bool diagonally, bool vertAndHorizToggle) GetTogglesInfo()
         {
-            return (diagonallyToggle.isOn, upAndDownToggle.isOn);
+            return (diagonallyToggle.isOn, vertAndHorizToggle.isOn);
         }
     }
 }
